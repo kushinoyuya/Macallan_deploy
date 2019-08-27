@@ -1,0 +1,52 @@
+<div class="container">
+  <div class="row">
+<%# <!-- sidebar  ここから --> %>
+    <div class="col-sm-3">
+    <%= render "layouts/adminsidebar" %>
+      <div class="side-box">
+        <%= render "search" %>
+      </div>
+    </div>
+<%# <!-- sidebar  ここまで --> %>
+
+    <div class="col-sm-9">
+      <h2>商品一覧</h2>
+      <div class="box">
+        <div class="row"><div class="col-xs-12">
+            <table class="table table-responsive">
+                <thead>
+                 <tr><th>ID</th>
+                    <th>商品名</th>
+                    <th>値段</th>
+                    <th>在庫</th>
+                    <th>アーティスト</th>
+                    <th>ステータス</th>
+                </tr></thead>
+                <tbody>
+<% if @results.any? %>
+
+ <% @results.each do |item| %>
+                <tr class="<% if item.sales_status == 'deleted'%>waiting<%elsif item.sales_status == 'suspension' || item.stock <= 0%>red-status<%end%>">
+                    <td><%= item.id %></td>
+                    <td>
+                    <%= link_to  manage_item_path(item) do %>
+                    <%= item.album %>
+                    <% end %>
+                    </td>
+                    <td>¥<%= item.price %></td>
+                    <td><%= item.stock %></td>
+                    <td><%= item.artist.name %></td>
+                    <td><%= sales_status(item) %></td>
+                </tr>
+ <% end %>
+<% end %>
+                    </tbody>
+                </table>
+                <%= paginate @results %>
+            </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

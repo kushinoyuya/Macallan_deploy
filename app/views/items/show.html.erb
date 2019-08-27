@@ -1,0 +1,173 @@
+<div class="container">
+    <div class="row">
+<% if !@item.nil?%>
+        <%# ジャケ写 %>
+        <div class="col-sm-6 text-center">
+            <div class="image-box">
+                <%= attachment_image_tag @item, :image, :fill, 215, 215, fallback: "no_image.jpg", :size=>"215x215", class: "images" %>
+            </div>
+        </div>
+
+        <%# 商品詳細情報 %>
+        <div class="col-sm-6 text-center">
+            <div style="margin:25px 0;">
+
+                    <%# 商品名 %>
+                    <div class="row">
+                        <table class="col-xs-8 col-xs-offset-2">
+                            <tbody>
+                                <td class="text-right" style="padding-right:10px;">
+                                <h2 style="display:inline;" class="glyphicon glyphicon-cd"><%= @item.album %></h2>
+                                </td>
+                                <%# いいねカウント %>
+                                <%# @itemsをrenderのcollectionでそれぞれを取り出してitemとして渡す %>
+                                <td class="text-left" style="padding-left:10px;">
+                                    <%= render 'likes/like_links', item: @item %>
+                                </td>
+                            </tbody>
+                        </table>
+                    </div>
+                    <%# アーティスト名 %>
+                    <p style="margin:30px 0 20px 0;"><%= @item.artist.name %> / <%= @item.label.name %> / <%= @item.category.name %></p>
+
+                    <%# 価格 %>
+
+                    <span style="font-size:1.4em;display:inline-block;color:red;">¥<%= tax_calc(@item.price) %><span style="color:black;">(税込)</span>　</span><%= stock_check(@item) %>
+                    <%# 在庫ステータス %>
+
+                    <%# カートに入れる %>
+
+                    <% if end_user_signed_in? && @item.sales_status == 'on_sale' && @item.stock >= 1 %>
+                        <%= form_with model: CartItem.new do |f| %>
+                        <%= f.select :count, options_for_select((1..20).to_a), {}, class: "form-control", :style=>"width:50px;display:inline-block;margin-top:20px;" %>
+                        <%= f.hidden_field :item_id, :value => @item.id %>
+                        <%= f.submit "カートに追加", class: "btn btn-default", :style=>"display:inline-block;margin-left:15px;", :data => {:disable_with => "カートに追加"} %>
+                        <% end %>
+                    <% end%>
+            </div>
+        </div>
+
+    </div><%# rowクラス閉じタグ %>
+
+<p></p>
+
+    <div class="row">
+        <%# 収録曲 %>
+        <div class="col-sm-6">
+            <div class="box">
+
+            <h4><strong class="glyphicon glyphicon-music">収録曲</strong></h4>
+                <% @discs.each do |disc| %>
+                <table class="table table-striped table-responsive">
+                    <thead>
+                        <tr>
+                            <th width="10%">曲順</th>
+                            <th width="45%">曲名</th>
+                            <th width="45%">アーティスト名</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <% disc.songs.each do |song| %>
+                        <tr>
+                            <td>
+                                No.<%= song.position %>
+                            </td>
+                            <td>
+                                <%= song.name %>
+                            </td>
+                            <td>
+                                <%= song.artist.name %>
+                            </td>
+                        </tr>
+                    <% end %>
+                    </tbody>
+                </table>
+                <% end %>
+            </div>
+        </div>
+
+        <%# レビュー %>
+        <div class="col-sm-6">
+            <%# レビュー内容表示 %>
+            <div class="box-radius">
+
+            <h4><strong class="glyphicon glyphicon-comment">レビュー</strong></h4>
+                <table class="table table-responsive">
+                    <tbody>
+                    <% if @reviews.any? %>
+                    <% @reviews.each do |review| %>
+                    <tr>
+                        <td>
+                            <p>投稿者：
+                                <%= review.name %>
+                                <% if end_user_signed_in?%>
+                                    <% if review.end_user_id == current_end_user.id%>
+                                <%= link_to "", review_path(review),method: :delete,class:"btn btn-danger glyphicon glyphicon-trash pull-right",:data => {:disable_with => ""}%>
+                                    <% end %>
+                                <% end %>
+                            </p>
+                            <p>
+                                <%# ヘルパーメソッド使用 %>
+                                <%= simple_date(review.created_at) %>
+                            </p>
+                            <%# 投稿コメント %>
+                            <p>
+                                <%= review.comment %>
+                            </p>
+                        </td>
+                    </tr>
+                    <%end%>
+                    <%else%>
+                    <tr><td>レビューはまだありません。</td></tr>
+                    <% end %>
+                    <td class="text-center"><%= paginate @reviews %></td>
+
+
+                    </tbody>
+                </table>
+
+
+            <%# レビュー投稿 %>
+            <% if end_user_signed_in? %>
+            <h4 class="glyphicon glyphicon-pencil" style="margin-top:-10px;">新規投稿・編集</h4>
+            <div class="item-rev-edit">
+
+                <%= form_for @review do |f| %>
+                    <p>名前</p>
+                    <%= f.text_field :name,class:"form-control" ,placeholder:"ニックネームを入力"%>
+                    <p>レビュー</p>
+                    <%= f.text_area :comment,class:"form-control",placeholder:"レビューを入力（投稿は商品につき１件まで可能です。）" %>
+                    <p></p>
+                    <%# hidden_fieldで情報を渡す %>
+                    <%= f.hidden_field :item_id, :value => @item.id %>
+                    <%= f.submit("レビューする",class: 'btn btn-primary center-block ') %>
+                <% end %>
+            </div>
+            <% end %>
+            </div>
+
+        </div>
+
+<%else%>
+<%= render 'deleted'%>
+<%end%>
+
+
+    </div><%# rowクラス閉じタグ %>
+
+
+
+
+
+
+
+</div><%# containerクラス閉じタグ %>
+
+
+
+
+
+
+
+
+</div>

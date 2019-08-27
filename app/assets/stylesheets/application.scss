@@ -1,0 +1,213 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.clearfix::after{
+	content:"";
+    display: block;
+    clear: both;
+}
+
+html {
+	min-height: 100vh;
+	position: relative;
+}
+body{
+	margin-bottom: 5em;
+	font-family:"ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+}
+
+li {
+	list-style: none;
+}
+.no-scroll{
+	overflow: hidden;
+	// 内容がボックスに収まらない場合、収まらない部分は非表示
+}
+p {
+	margin:3px;
+}
+
+.sidebar {
+	border: 1px solid rgba(0,0,0,.4);
+	width: 100%;
+}
+h2 {
+	font-family: 'Hiragino Kaku Gothic StdN'
+}
+.valid {
+	background-color: lightgrey;
+}
+.touch {
+	&:hover{
+		background-color:rgba(0,0,255,.05);
+	}
+}
+
+// スクロールボタン
+
+
+#scroll-button{
+	width: 40px;
+	height: 40px;
+	position: fixed;
+	right: 50px;
+	bottom: 50px;
+	opacity: 0.6;
+	z-index:9;
+	display:none;
+  }
+  #scroll-button span{
+	position: relative;
+	display: block;
+	width: 70px;
+	height: 70px;
+	text-decoration: none;
+	border-radius: 50%;
+	background-color:rgba(0,0,0,.3);
+  }
+  #scroll-button span::before{
+	font-weight: 900;
+	content: '▲';
+	font-size: 25px;
+	color: white;
+	position: absolute;
+	width: 25px;
+	height: 25px;
+	top: -25px;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	margin: auto;
+	text-align: center;
+  }
+  #scroll-button span::after{
+	content: 'TOP';
+	font-family: 'arial black';
+	font-size: 13px;
+	color: #fff;
+	position: absolute;
+	top: 40px;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	margin: auto;
+	text-align: center;
+	color: #white;
+  }
+  #scroll-button:hover{
+	  opacity: 0.9;
+  }
+
+// アイテム一覧
+.item-box{
+	text-align: center;
+	border-radius: 20px;
+	padding: 10px 0;
+	transition: 1s;
+	margin-bottom: 15px;
+	color: black;
+	&:hover{
+		background-color: rgba(0,0,0,1);
+		color: #fff;
+	}
+	// 商品詳細情報
+	.item-text{
+		border-bottom: 1px solid white;
+	}
+}
+// 商品画像（ジャケ写）
+.image-box{
+	background-color: white;
+	display: inline-block;
+	padding: 2px;
+
+
+}
+
+// フラッシュメッセージ
+
+.alert {
+	background-color: rgba(0,0,0,.5);
+	color:white;
+	text-align:center;
+	display:none;
+}
+.red-color {
+	background-color: rgba(200,0,0,.4);
+}
+
+  // ＊＊＊＊＊フッター＊＊＊＊＊
+ .footer {
+	 background-color:rgba(0,0,0,.6);
+	 margin-top: 30px;
+	 height: 50px;
+	 line-height: 50px;
+	 text-align: center;
+	 color: white;
+ }
+footer{
+	width:100%;
+	height:5em;
+	position: absolute;
+	bottom: 0;
+	margin-top:60px;
+}
+
+// いいねボタン
+.like-btn{
+	border-radius:15px;
+	background-color:rgba(200,0,0,.2);
+	border:none;
+	padding:10px;
+	&:hover{
+		opacity:.5;
+	}
+
+}
+.container {
+	background-color: rgba(255,255,255,.93);
+	border-radius: 20px;
+	padding:30px 20px;
+}
+body{
+	background-color:black;
+	background-image:url('/images/boat.jpg');
+	background-attachment: fixed;
+	background-size: cover;
+}
+
+// エンドユーザーログイン画面
+.login{
+	color: white;
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+// manage-order
+.red-status{
+	background-color:rgba(255,0,0,.1);
+}
+.waiting{
+	background-color:rgba(0,255,0,.1);
+}

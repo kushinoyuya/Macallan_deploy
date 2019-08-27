@@ -1,0 +1,71 @@
+<div class = "container">
+  <div class = "row">
+    <%# ここからサイドバー %>
+    <div class = "col-sm-2">
+      <%= render "end_users/sidebar"%>
+    </div>
+    <%# サイドバーここまで %>
+    <div class = "col-sm-9">
+    <h2>マイページ</h2>
+      <h3><%= current_end_user.last_name %> <%= current_end_user.first_name %> さんがいいねをした商品</h3>
+      <%# いいねをした商品を表示する %>
+        <% @likes.each do |like| %>
+        <div class="box-radius"  id="like-<%= like.item.id %>" >
+          <table class = "table" style="margin:-10px;">
+            <tbody>
+                <%# ジャケ写 %>
+              <td class="col-xs-3" style="border-top-style:none;">
+                <%= attachment_image_tag like.item, :image, :fill, 100, 100, fallback: "no_image.jpg", :size=>"100x100",class:"images" %>
+              </td>
+              <td class="col-xs-3" style="vertical-align:middle; border-top-style:none;">
+                <%# 商品名 リンク付き %>
+                <span><%= link_to like.item.album, item_path(like.item.id) %></span><br>
+                <%# アーティスト名 %>
+                <span><%= like.item.artist.name %></span><br>
+                <%# ジャンル %>
+                <span><%= like.item.category.name %></span><br>
+                <%# シングル/アルバム名 %>
+                <span><%= like.item.album %></span><br>
+                <%# ストック %>
+                <span><%= stock_check(like.item) %>
+                <%# 購入数 %>
+              </td>
+              <td class="col-xs-3" style="vertical-align:middle; border-top-style:none;">
+                <%# 価格 %>
+                <span>¥<%= tax_calc(like.item.price) %>(税込)</span>
+              </td>
+              <td class="col-xs-3 text-right" style="vertical-align:middle; border-top-style:none;">
+
+
+                <%# likeボタン %>
+                <p><%= render 'likes/like_links', item: like.item %></p>
+
+                
+                <%# カートに入れる %>
+                
+                  <% if like.item.sales_status == 'on_sale' && like.item.stock >= 1 %>
+                      <%= form_with model: @cart_item do |f| %>
+                    <%= f.hidden_field :item_id, :value => like.item.id %>
+                  
+                      <%= f.submit "カートに追加", class: "btn btn-default pull-right" %>    
+                      <%= f.select :count, options_for_select((1..20).to_a), {}, class: "form-control pull-right", :style=>"width:50px;" %>
+                  
+                      <% end %>
+                  <% end%>
+                
+
+              </td>
+              
+            </tbody>
+          </table>
+        </div>
+        <% end %>
+    </div>
+  </div>
+  <div class = "row">
+    <div class = "col-sm-12">
+      <%# KAMINARI実装 %>
+      <%= paginate @likes %>
+    </div>
+  </div>
+</div>

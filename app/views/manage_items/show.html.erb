@@ -1,0 +1,71 @@
+<div class="container">
+  <div class="row">
+<%# <!-- sidebar  ここから --> %>
+    <div class="col-sm-3">
+    <%= render partial: "layouts/adminsidebar" %>
+      <div class="side-box">
+        <%= render "search" %>
+      </div>
+    </div>
+<%# <!-- sidebar  ここまで --> %>
+<% if @item.sales_status == 'deleted' %>
+<%# ステータスがdeletedなら異なるビューを表示 %>
+  <%= render 'deleted' %>
+  <% else %>
+    <div class="col-sm-9">
+      <h2>商品詳細</h2>
+      <div class="box">
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-responsive">
+                    <tbody>
+                        <tr><th>ID</th>
+                        <td><%= @item.id %><%= link_to "[ 商品削除 ]", manage_item_path, method: :delete, class:"pull-right", data: { confirm: "商品を削除します。\n全ユーザーのカートから削除されます。" } %><%= link_to "[ 編集 ]", edit_manage_item_path, class: "pull-right" %></td></tr>
+
+                        <tr><th>商品名</th>
+                        <td><%= @item.album %></td></tr>
+
+                        <tr><th>ジャケット画像</th>
+                        <td><%= attachment_image_tag @item, :image, :fill, 100, 100, format: 'jpeg', fallback: "no_image.jpg" %></td></tr>
+                        
+                        <tr><th>ジャンル</th>
+                        <td><%= @item.category.name %></td></tr>
+                        
+                        <tr><th>レーベル</th>
+                        <td><%= @item.label.name %></td></tr>
+
+                        <tr><th>アーティスト</th>
+                        <td><%= @item.artist.name %></td></tr>
+                        
+                        <tr><th>在庫数</th>
+                        <td><%= @item.stock %></td></tr>
+
+                        <tr><th>税別価格</th>
+                        <td>¥<%= @item.price %></td></tr>
+
+                        <tr><th>ステータス</th>
+                        <td><%= sales_status(@item) %></td></tr>
+
+                        <tr><th>発売日</th>
+                        <td><%= simple_date(@item.release_date) %></td></tr>
+
+                        <tr><th>登録日</th>
+                        <td><%= simple_date(@item.created_at) %></td></tr>
+
+                        <tr><th>収録内容</th>
+                        <td>
+                <% @item.discs.each do |disc| %>
+                        <div class="sort" id="disc-<%= disc.id %>">
+                        <%= render 'sort', disc: disc %>
+                        </div>
+                <% end %>
+                </td>
+                </tbody>
+              </table>
+            </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>
