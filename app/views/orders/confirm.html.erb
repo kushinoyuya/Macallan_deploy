@@ -11,7 +11,7 @@
               <td class="col-xs-2"></td><th class="col-xs-4">商品名</th><th class="col-xs-3">数量</th><th class="col-xs-3"></th></tr>
               <% @cart_items.each do |cart_item| %>
             <tr><td>
-                <%= attachment_image_tag cart_item.item, :image, :fill, 50,50, fallback: "no_image.jpg", :size=>"50x50",class:"pull-left" %></td>
+                <%= attachment_image_tag cart_item.item, :image, :fill, 50,50, fallback: "/images/no_image.jpg", :size=>"50x50",class:"pull-left" %></td>
             <td style="vertical-align:middle;"><%= cart_item.item.album %></td>
             <td style="vertical-align:middle;"><%= cart_item.count %></td>
             <td style="vertical-align:middle;" class="text-right">¥<%= total_price(cart_item) %></td></tr>

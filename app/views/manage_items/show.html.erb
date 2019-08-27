@@ -26,17 +26,17 @@
                         <td><%= @item.album %></td></tr>
 
                         <tr><th>ジャケット画像</th>
-                        <td><%= attachment_image_tag @item, :image, :fill, 100, 100, format: 'jpeg', fallback: "no_image.jpg" %></td></tr>
-                        
+                        <td><%= attachment_image_tag @item, :image, :fill, 100, 100, format: 'jpeg', fallback: "/images/no_image.jpg" %></td></tr>
+
                         <tr><th>ジャンル</th>
                         <td><%= @item.category.name %></td></tr>
-                        
+
                         <tr><th>レーベル</th>
                         <td><%= @item.label.name %></td></tr>
 
                         <tr><th>アーティスト</th>
                         <td><%= @item.artist.name %></td></tr>
-                        
+
                         <tr><th>在庫数</th>
                         <td><%= @item.stock %></td></tr>
 
